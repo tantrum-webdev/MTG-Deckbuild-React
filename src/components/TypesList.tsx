@@ -2,17 +2,18 @@ import { useState, useEffect } from 'react';
 import endpoints from '../config/endpoints';
 
 function TypesList() {
-	const [types, setTypes] = useState<Array<string>>([]);
+	const [archetypes, setArchetypes] = useState<Array<string>>([]);
 
 	useEffect(() => {
 		fetch(endpoints.base + endpoints.types).then(async (res) => {
 			const { types } = await res.json();
-			setTypes(types);
+			setArchetypes(types);
 		});
-	});
+	}, []);
+
 	return (
 		<>
-			{types.map((t, i) => (
+			{archetypes.map((t, i) => (
 				<div key={i}>{t}</div>
 			))}
 		</>
