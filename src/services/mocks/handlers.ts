@@ -2,7 +2,7 @@ import { rest } from "msw";
 import endpoints from "../../config/endpoints";
 
 export const handlers = [
-    rest.get(endpoints.types, (_, res, ctx) => {
+    rest.get(endpoints.base + endpoints.types, (_, res, ctx) => {
         return res(
             ctx.status(200),
             ctx.json({
@@ -21,7 +21,7 @@ export const handlers = [
                     "Tribal",
                     "Vanguard"
                 ]
-            })
+            }),
         );
     }),
 ];
