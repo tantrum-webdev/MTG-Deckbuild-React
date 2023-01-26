@@ -17,4 +17,8 @@ export class LocalStorageMock {
   clear() {
     this.items.clear();
   }
+
+  get length() {
+    return this.items.size;
+  }
 }

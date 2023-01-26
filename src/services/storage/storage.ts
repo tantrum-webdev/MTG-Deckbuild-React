@@ -69,7 +69,7 @@ export const storage = {
    * Clear the decks
    */
   clear() {
-    storage.clear();
+    localStorage.clear();
   },
 };
 
