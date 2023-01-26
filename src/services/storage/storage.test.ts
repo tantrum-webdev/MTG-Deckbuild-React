@@ -82,10 +82,6 @@ describe('Storage interface', () => {
   describe('Clear method', () => {
     it('Wipes the storage', () => {
       localStorage.setItem('decks', JSON.stringify([{ id: 'first item' }]));
-      localStorage.setItem(
-        'profile',
-        JSON.stringify({ firstName: 'Jean', lastName: 'Gabin' })
-      );
 
       storage.clear();
       expect(localStorage.length).toBe(0);
