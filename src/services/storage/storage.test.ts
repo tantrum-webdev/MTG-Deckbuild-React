@@ -31,6 +31,10 @@ describe('Storage interface', () => {
 
       expect(storage.getOne('item')).toStrictEqual(deck);
     });
+
+    it('Returns null if deck does not exist', () => {
+      expect(storage.getOne('item')).toBe(null);
+    });
   });
 
   describe('Store method', () => {
@@ -76,6 +80,27 @@ describe('Storage interface', () => {
       );
 
       expect(retrievedStorage).toStrictEqual([{ id: 'new Item' }]);
+    });
+
+    it('Trying to remove a deck from empty storage does nothing', () => {
+      storage.deleteOne('does not exist');
+
+      const receivedStorage = JSON.parse(
+        localStorage.getItem('decks') as string
+      );
+      expect(receivedStorage).toStrictEqual([]);
+    });
+
+    it('Trying to remove a deck that does not exist does nothing', () => {
+      const deck = { id: 'keep' };
+      localStorage.setItem('decks', JSON.stringify([deck]));
+
+      storage.deleteOne('badItem');
+
+      const receivedStorage = JSON.parse(
+        localStorage.getItem('decks') as string
+      );
+      expect(receivedStorage).toStrictEqual([deck]);
     });
   });
 

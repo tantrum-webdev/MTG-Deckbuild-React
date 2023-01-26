@@ -18,7 +18,7 @@ export const storage = {
   getOne(key: string) {
     const data = getDataOrNull(this.base_key) ?? [];
 
-    return data.find(({ id }) => id === key);
+    return data.find(({ id }) => id === key) ?? null;
   },
 
   /**
