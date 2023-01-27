@@ -1,6 +1,4 @@
-export interface Deck {
-  id: string;
-}
+import { Deck } from '@/types';
 
 export const storage = {
   base_key: 'decks',

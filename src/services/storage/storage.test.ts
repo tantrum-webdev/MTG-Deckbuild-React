@@ -27,7 +27,8 @@ describe('Storage interface', () => {
   describe('GetOne method', () => {
     it('Returns deck if it exists in storage', () => {
       const deck = { id: 'item', name: 'My custom deck' };
-      localStorage.setItem('decks', JSON.stringify([deck]));
+      const otherDeck = { id: 'other', mame: 'Imported deck' };
+      localStorage.setItem('decks', JSON.stringify([deck, otherDeck]));
 
       expect(storage.getOne('item')).toStrictEqual(deck);
     });

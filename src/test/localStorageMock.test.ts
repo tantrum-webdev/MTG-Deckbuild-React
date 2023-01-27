@@ -26,9 +26,10 @@ describe('LocalStorageMock', () => {
 
   describe('getItem method', () => {
     it('Retrieve one item from storage', () => {
-      mockStorage.items.set('test', 'item');
+      mockStorage.items.set('someItem', 'unwanted item');
+      mockStorage.items.set('retrieve', 'wanted item');
 
-      expect(mockStorage.getItem('test')).toBe('item');
+      expect(mockStorage.getItem('retrieve')).toBe('wanted item');
     });
 
     it('Returns null if key does not exist', () => {
@@ -37,10 +38,12 @@ describe('LocalStorageMock', () => {
   });
 
   it('removeItem: Remove one item from storage', () => {
-    mockStorage.items.set('test', 'item');
+    mockStorage.items.set('test', 'unwanted item');
+    mockStorage.items.set('keep', 'wanted item');
 
     mockStorage.removeItem('test');
     expect(mockStorage.items.has('test')).toBe(false);
+    expect(mockStorage.items.has('keep')).toBe(true);
   });
 
   it('clear: Clean the storage', () => {
