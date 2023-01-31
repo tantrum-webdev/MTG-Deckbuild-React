@@ -1,9 +1,9 @@
-import TypesList from './components/TypesList';
+import { Table } from '@/components';
 
 function App() {
   return (
     <div className="App">
-      <TypesList />
+      <Table />
     </div>
   );
 }
