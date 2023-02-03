@@ -1,6 +1,8 @@
+import classes from './Table.module.css';
+
 export default function Table() {
   return (
-    <table>
+    <table className={classes.table}>
       <caption>My Decks</caption>
       <thead>
         <tr>
