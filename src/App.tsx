@@ -1,11 +1,8 @@
-import TypesList from './components/TypesList';
+import { Table } from '@/components';
+import './styles.css';
 
 function App() {
-  return (
-    <div className="App">
-      <TypesList />
-    </div>
-  );
+  return <Table />;
 }
 
 export default App;
