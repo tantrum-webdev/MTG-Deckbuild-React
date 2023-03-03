@@ -1,9 +1,11 @@
+import { Table } from '@/components';
 import { RecoilRoot } from 'recoil';
+import './styles.css';
 
 function App() {
   return (
     <RecoilRoot>
-      <div className="App" />
+      <Table />
     </RecoilRoot>
   );
 }
