@@ -1,5 +1,13 @@
+import { Table } from '@/components';
+import { RecoilRoot } from 'recoil';
+import './styles.css';
+
 function App() {
-	return <div className="App"></div>;
+  return (
+    <RecoilRoot>
+      <Table />
+    </RecoilRoot>
+  );
 }
 
 export default App;

@@ -52,6 +52,12 @@ To run tests, run the following command
   npm run test
 ```
 
+To run tests with coverage results:
+
+```bash
+  npm run coverage
+```
+
 ## Documentation
 
 [Documentation](https://tantrum-webdev.github.io/#/)
