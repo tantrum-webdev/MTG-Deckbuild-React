@@ -1,10 +1,10 @@
-import TypesList from './components/TypesList';
+import { RecoilRoot } from 'recoil';
 
 function App() {
   return (
-    <div className="App">
-      <TypesList />
-    </div>
+    <RecoilRoot>
+      <div className="App" />
+    </RecoilRoot>
   );
 }
 
