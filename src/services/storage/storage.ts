@@ -22,12 +22,10 @@ export const storage = {
   /**
    * Add a new deck to the decks list
    */
-  store(deck: Deck) {
-    const data = getDataOrNull(this.base_key) ?? [];
+  store(decks: Deck[]) {
+    localStorage.setItem(this.base_key, JSON.stringify(decks));
 
-    localStorage.setItem(this.base_key, JSON.stringify([...data, deck]));
-
-    return deck;
+    return decks;
   },
 
   /**

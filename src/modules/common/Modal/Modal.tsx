@@ -22,10 +22,8 @@ export default function Modal({ modalRef }: ModalProps) {
   };
 
   const addDeck = () => {
-    setDeckList((decks) => [
-      ...decks,
-      { name, format, id: crypto.randomUUID() },
-    ]);
+    const deck: Deck = { name, format, id: crypto.randomUUID() };
+    setDeckList((decks) => [...decks, deck]);
     setName('');
     setFormat('Standard');
   };
@@ -44,10 +42,13 @@ export default function Modal({ modalRef }: ModalProps) {
           />
         </label>
         <label htmlFor="Format">
-          <select name="deckFormat" id="deckFormat" onChange={updateFormat}>
-            <option value="Standard" selected>
-              Standard
-            </option>
+          <select
+            name="deckFormat"
+            id="deckFormat"
+            onChange={updateFormat}
+            value={format}
+          >
+            <option value="Standard">Standard</option>
             <option value="Limited">Limited</option>
             <option value="Commander">Commander</option>
           </select>

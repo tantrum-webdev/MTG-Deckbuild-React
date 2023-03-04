@@ -14,5 +14,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 
 async function startMSWWorker() {
   const { worker } = await import('./services/mocks/browser');
-  worker.start();
+  worker.start({
+    onUnhandledRequest: 'bypass',
+  });
 }
