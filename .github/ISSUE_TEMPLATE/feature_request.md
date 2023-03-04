@@ -17,3 +17,9 @@ assignees: ''
 
 ## Possible Implementation
 <!--- Not obligatory, but suggest an idea for implementing addition or change -->
+
+## Acceptance Criteria
+<!-- Descriptive list of things to validate before considering this story done -->
+
+## External Resources
+<!-- Mock ups, Libraries, Documentation, Articles suggestions that could be used to develop the feature -->
