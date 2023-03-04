@@ -1,17 +1,24 @@
+import endpoints from '@/config/endpoints';
 import { deckListState } from '@/store/listing';
 import { Deck, Format } from '@/types';
-import React, { ChangeEvent, useState } from 'react';
+import { ChangeEvent, MutableRefObject, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useSetRecoilState } from 'recoil';
+import useSWR from 'swr';
 
 interface ModalProps {
-  modalRef: React.MutableRefObject<null | HTMLDialogElement>;
+  modalRef: MutableRefObject<null | HTMLDialogElement>;
 }
 
 export default function Modal({ modalRef }: ModalProps) {
   const [name, setName] = useState('');
   const [format, setFormat] = useState<Format>('Standard');
   const setDeckList = useSetRecoilState(deckListState);
+
+  const { data, isLoading } = useSWR<{ formats: Format[] }>(
+    endpoints.formats,
+    (key: string) => fetch(key).then((res) => res.json())
+  );
 
   const updateName = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);

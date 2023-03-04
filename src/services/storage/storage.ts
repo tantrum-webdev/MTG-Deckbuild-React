@@ -20,7 +20,7 @@ export const storage = {
   },
 
   /**
-   * Add a new deck to the decks list
+   * Updates the stored deck list with a new one.
    */
   store(decks: Deck[]) {
     localStorage.setItem(this.base_key, JSON.stringify(decks));
