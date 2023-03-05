@@ -28,11 +28,20 @@ export default function Modal({ modalRef }: ModalProps) {
     setFormat(e.currentTarget.value as Format);
   };
 
+  const resetForm = () => {
+    setName('');
+    setFormat('Standard');
+  };
+
   const addDeck = () => {
     const deck: Deck = { name, format, id: crypto.randomUUID() };
     setDeckList((decks) => [...decks, deck]);
-    setName('');
-    setFormat('Standard');
+    resetForm();
+  };
+
+  const closeModal = () => {
+    resetForm();
+    modalRef.current?.close();
   };
 
   const dom = (
@@ -62,11 +71,7 @@ export default function Modal({ modalRef }: ModalProps) {
             ))}
           </select>
         </label>
-        <button
-          type="button"
-          value="cancel"
-          onClick={() => modalRef.current?.close()}
-        >
+        <button type="button" value="cancel" onClick={closeModal}>
           Cancel
         </button>
         <button value="save" onClick={addDeck}>
