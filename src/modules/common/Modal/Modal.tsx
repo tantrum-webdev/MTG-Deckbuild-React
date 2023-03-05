@@ -15,7 +15,7 @@ export default function Modal({ modalRef }: ModalProps) {
   const [format, setFormat] = useState<Format>('Standard');
   const setDeckList = useSetRecoilState(deckListState);
 
-  const { data, isLoading } = useSWR<{ formats: Format[] }>(
+  const { data } = useSWR<{ formats: Format[] }>(
     endpoints.formats,
     (key: string) => fetch(key).then((res) => res.json())
   );
@@ -55,9 +55,11 @@ export default function Modal({ modalRef }: ModalProps) {
             onChange={updateFormat}
             value={format}
           >
-            <option value="Standard">Standard</option>
-            <option value="Limited">Limited</option>
-            <option value="Commander">Commander</option>
+            {data?.formats.map((format) => (
+              <option key={format} value={format}>
+                {format}
+              </option>
+            ))}
           </select>
         </label>
         <button
