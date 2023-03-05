@@ -1,47 +1,58 @@
-import endpoints from '@/config/endpoints';
-import { deckListState } from '@/store/listing';
-import { Deck, Format } from '@/types';
 import { ChangeEvent, MutableRefObject, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useSetRecoilState } from 'recoil';
 import useSWR from 'swr';
+import endpoints from '@/config/endpoints';
+import { fetcher } from '@/services';
+import { deckListState } from '@/store/listing';
+import { Deck, Format, IDLessDeck } from '@/types';
+
+/**
+ * TODO :
+ * - Set the Modal content from the caller (passing the content as a child / component prop?)
+ * - Basic styling
+ * - Close modal on escape key and/or click outside ?
+ */
 
 interface ModalProps {
   modalRef: MutableRefObject<null | HTMLDialogElement>;
 }
 
+type FormUpdateFn = (
+  e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+) => void;
+
+const initialState: IDLessDeck = {
+  name: '',
+  format: 'Standard',
+};
+
 export default function Modal({ modalRef }: ModalProps) {
-  const [name, setName] = useState('');
-  const [format, setFormat] = useState<Format>('Standard');
+  const [form, setForm] = useState<IDLessDeck>(initialState);
   const setDeckList = useSetRecoilState(deckListState);
 
-  const { data } = useSWR<{ formats: Format[] }>(
-    endpoints.formats,
-    (key: string) => fetch(key).then((res) => res.json())
-  );
+  const { data: formats } = useSWR<Format[]>(endpoints.formats, fetcher);
 
-  const updateName = (e: ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-  };
-
-  const updateFormat = (e: ChangeEvent<HTMLSelectElement>) => {
-    setFormat(e.currentTarget.value as Format);
+  const updateForm: FormUpdateFn = ({ target: { name, value } }) => {
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const resetForm = () => {
-    setName('');
-    setFormat('Standard');
+    setForm(initialState);
   };
 
   const addDeck = () => {
-    const deck: Deck = { name, format, id: crypto.randomUUID() };
+    const deck: Deck = { ...form, id: crypto.randomUUID() };
     setDeckList((decks) => [...decks, deck]);
     resetForm();
   };
 
   const closeModal = () => {
-    resetForm();
     modalRef.current?.close();
+    resetForm();
   };
 
   const dom = (
@@ -52,19 +63,20 @@ export default function Modal({ modalRef }: ModalProps) {
           <input
             type="text"
             id="deckName"
+            name="name"
             placeholder="deck's name"
-            onChange={updateName}
-            value={name}
+            onChange={updateForm}
+            value={form.name}
           />
         </label>
         <label htmlFor="Format">
           <select
-            name="deckFormat"
+            name="format"
             id="deckFormat"
-            onChange={updateFormat}
-            value={format}
+            onChange={updateForm}
+            value={form.format}
           >
-            {data?.formats.map((format) => (
+            {formats?.map((format) => (
               <option key={format} value={format}>
                 {format}
               </option>

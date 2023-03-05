@@ -6,7 +6,10 @@ export default function Listing() {
   return (
     <section>
       <header>
-        <ActionButton action={() => ref.current?.show()} />
+        <ActionButton
+          action={() => ref.current?.show()}
+          textContent="Add new deck"
+        />
       </header>
       <Table />
       <Modal modalRef={ref} />

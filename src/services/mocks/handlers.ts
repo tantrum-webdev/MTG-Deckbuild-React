@@ -6,9 +6,7 @@ export const handlers = [
   rest.get(endpoints.formats, (_, res, ctx) => {
     return res(
       ctx.status(200),
-      ctx.json<{ formats: Format[] }>({
-        formats: ['Standard', 'Limited', 'Commander'],
-      })
+      ctx.json<Format[]>(['Standard', 'Limited', 'Commander'])
     );
   }),
 ];

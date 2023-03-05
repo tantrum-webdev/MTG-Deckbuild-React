@@ -1,3 +1,3 @@
 import { storage } from './storage/storage';
-
-export { storage };
+import { fetcher } from './services';
+export { storage, fetcher };
