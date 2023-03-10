@@ -1,5 +1,5 @@
-import Table from './Table/Table';
-import ActionButton from './ActionButton/ActionButton';
-import Modal from './Modal/Modal';
+import Table from './table/Table';
+import ActionButton from './actionButton/ActionButton';
+import Modal from './modal/Modal';
 
 export { Table, ActionButton, Modal };

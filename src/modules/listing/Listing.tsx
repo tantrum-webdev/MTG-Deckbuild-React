@@ -1,5 +1,6 @@
 import { ActionButton, Modal, Table } from '@/modules/common';
 import { useRef } from 'react';
+import AddDeckForm from '../common/modal/AddDeckForm';
 
 export default function Listing() {
   const ref = useRef<HTMLDialogElement>(null);
@@ -7,12 +8,14 @@ export default function Listing() {
     <section>
       <header>
         <ActionButton
-          action={() => ref.current?.show()}
+          action={() => ref.current?.showModal()}
           textContent="Add new deck"
         />
       </header>
       <Table />
-      <Modal modalRef={ref} />
+      <Modal modalRef={ref}>
+        <AddDeckForm modalRef={ref} />
+      </Modal>
     </section>
   );
 }

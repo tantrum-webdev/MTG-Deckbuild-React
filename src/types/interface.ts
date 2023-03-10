@@ -1,3 +1,5 @@
+import { ChangeEvent } from 'react';
+
 export type Format = 'Standard' | 'Limited' | 'Commander';
 
 export interface Deck {
@@ -7,3 +9,7 @@ export interface Deck {
 }
 
 export type IDLessDeck = Omit<Deck, 'id'>;
+
+export type FormUpdateFn = (
+  e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+) => void;
