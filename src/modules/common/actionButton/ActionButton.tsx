@@ -1,11 +1,18 @@
 interface ButtonProps {
   action: () => void;
   textContent: string;
+  value?: string;
+  type?: 'submit' | 'button';
 }
 
-export default function ActionButton({ action, textContent }: ButtonProps) {
+export default function ActionButton({
+  action,
+  textContent,
+  value,
+  type = 'button',
+}: ButtonProps) {
   return (
-    <button type="button" onClick={action}>
+    <button type={type} onClick={action} value={value}>
       {textContent}
     </button>
   );

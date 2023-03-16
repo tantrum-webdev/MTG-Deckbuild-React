@@ -1,5 +1,4 @@
 .modal {
-  display: grid;
   margin: auto;
   padding: 0;
   position: fixed;
@@ -9,29 +8,4 @@
 .modal:not([open]) {
   pointer-events: none;
   opacity: 0;
-}
-
-.modal form {
-  display: grid;
-  padding: 1rem;
-  gap: 1rem;
-}
-
-.modal form label {
-  display: flex;
-  gap: 1rem;
-  justify-content: start;
-}
-
-.modal form span {
-  width: 6ch;
-}
-
-.modal div {
-  display: flex;
-  gap: 1rem;
-}
-
-.modal button {
-  flex: 1;
 }

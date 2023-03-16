@@ -5,6 +5,8 @@ import { Deck, Format, FormUpdateFn, IDLessDeck } from '@/types';
 import { MutableRefObject, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import useSWR from 'swr';
+import { ActionButton } from '@/modules/common';
+import classes from './AddDeckForm.module.css';
 
 const initialState: IDLessDeck = {
   name: '',
@@ -36,6 +38,7 @@ export default function AddDeckForm({ modalRef }: FormProps) {
     const deck: Deck = { ...form, id: crypto.randomUUID() };
     setDeckList((decks) => [...decks, deck]);
     resetForm();
+    console.log('aiiight');
   };
 
   const closeModal = () => {
@@ -43,7 +46,7 @@ export default function AddDeckForm({ modalRef }: FormProps) {
     resetForm();
   };
   return (
-    <form method="dialog">
+    <form method="dialog" className={classes.form}>
       <h2>Create a new Deck</h2>
       <label htmlFor="deckName">
         <span>Name:</span>
@@ -72,12 +75,16 @@ export default function AddDeckForm({ modalRef }: FormProps) {
         </select>
       </label>
       <div>
-        <button type="button" value="cancel" onClick={closeModal}>
-          Cancel
-        </button>
-        <button value="save" onClick={addDeck}>
+        <ActionButton action={closeModal} textContent="Cancel" />
+        <ActionButton
+          action={addDeck}
+          textContent="Save"
+          value="save"
+          type="submit"
+        />
+        {/* <button value="save" onClick={addDeck}>
           Save
-        </button>
+        </button> */}
       </div>
     </form>
   );

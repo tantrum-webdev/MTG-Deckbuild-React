@@ -1,6 +1,6 @@
 import { ActionButton, Modal, Table } from '@/modules/common';
 import { useRef } from 'react';
-import AddDeckForm from '../common/modal/AddDeckForm';
+import { AddDeckForm } from '@/modules/common';
 
 export default function Listing() {
   const ref = useRef<HTMLDialogElement>(null);
