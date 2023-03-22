@@ -1,5 +1,6 @@
 import { deckListState } from '@/store/listing';
 import { useRecoilValue } from 'recoil';
+import RemoveDeckButton from '@/modules/common/actionButton/RemoveDeckButton';
 import classes from './Table.module.css';
 
 export default function Table() {
@@ -21,7 +22,7 @@ export default function Table() {
             <td data-label="Name">{name}</td>
             <td data-label="Format">{format}</td>
             <td data-label="Actions">
-              <button>Export</button>
+              <RemoveDeckButton id={id} />
             </td>
           </tr>
         ))}
