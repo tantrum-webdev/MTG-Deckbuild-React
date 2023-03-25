@@ -38,7 +38,6 @@ export default function AddDeckForm({ modalRef }: FormProps) {
     const deck: Deck = { ...form, id: crypto.randomUUID() };
     setDeckList((decks) => [...decks, deck]);
     resetForm();
-    console.log('aiiight');
   };
 
   const closeModal = () => {

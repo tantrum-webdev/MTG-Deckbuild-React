@@ -1,9 +1,15 @@
 import { deckListState } from '@/store/listing';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { ActionButton } from '@/modules/common';
 import classes from './Table.module.css';
 
 export default function Table() {
   const decks = useRecoilValue(deckListState);
+  const setDeckList = useSetRecoilState(deckListState);
+
+  const removeDeck = (id: string) => {
+    setDeckList((decks) => decks.filter((deck) => deck.id !== id));
+  };
 
   return (
     <table className={classes.table}>
@@ -21,7 +27,11 @@ export default function Table() {
             <td data-label="Name">{name}</td>
             <td data-label="Format">{format}</td>
             <td data-label="Actions">
-              <button>Export</button>
+              <ActionButton
+                action={() => removeDeck(id)}
+                textContent="Delete"
+                value="save"
+              />
             </td>
           </tr>
         ))}
