@@ -1,12 +1,9 @@
 import { useSetRecoilState } from 'recoil';
 import { deckListState } from '@/store/listing';
+import { IDOnlyDeck } from '@/types';
 import ActionButton from './ActionButton';
 
-interface RemoveDeckProps {
-  id: string;
-}
-
-export default function RemoveDeckButton({ id }: RemoveDeckProps) {
+export default function RemoveDeckButton({ id }: IDOnlyDeck) {
   const setDeckList = useSetRecoilState(deckListState);
 
   const removeDeck = () => {

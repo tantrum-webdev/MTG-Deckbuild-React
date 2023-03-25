@@ -10,6 +10,8 @@ export interface Deck {
 
 export type IDLessDeck = Omit<Deck, 'id'>;
 
+export type IDOnlyDeck = Pick<Deck, 'id'>;
+
 export type FormUpdateFn = (
   e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
 ) => void;
