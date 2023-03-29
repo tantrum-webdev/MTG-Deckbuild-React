@@ -34,10 +34,12 @@ export default function AddDeckForm({ modalRef }: FormProps) {
     setForm(initialState);
   };
 
-  const addDeck = () => {
+  const addDeck = (e) => {
+    e.preventDefault();
     const deck: Deck = { ...form, id: crypto.randomUUID() };
     setDeckList((decks) => [...decks, deck]);
     resetForm();
+    modalRef.current?.close();
   };
 
   const closeModal = () => {
@@ -45,7 +47,7 @@ export default function AddDeckForm({ modalRef }: FormProps) {
     resetForm();
   };
   return (
-    <form method="dialog" className={classes.form}>
+    <form method="dialog" className={classes.form} name="addDeckForm">
       <h2>Create a new Deck</h2>
       <label htmlFor="deckName">
         <span>Name:</span>
@@ -81,9 +83,6 @@ export default function AddDeckForm({ modalRef }: FormProps) {
           value="save"
           type="submit"
         />
-        {/* <button value="save" onClick={addDeck}>
-          Save
-        </button> */}
       </div>
     </form>
   );
