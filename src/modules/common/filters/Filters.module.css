@@ -1,0 +1,13 @@
+.section {
+  margin: 1em 0;
+}
+
+.label {
+  display: flex;
+  gap: 1rem;
+  justify-content: start;
+}
+
+.label span {
+  width: 6ch;
+}

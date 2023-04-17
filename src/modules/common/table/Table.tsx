@@ -1,10 +1,10 @@
-import { deckListState } from '@/store/listing';
+import { deckListState, filteredDeckListState } from '@/store/listing';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { ActionButton } from '@/modules/common';
 import classes from './Table.module.css';
 
 export default function Table() {
-  const decks = useRecoilValue(deckListState);
+  const filteredDecks = useRecoilValue(filteredDeckListState);
   const setDeckList = useSetRecoilState(deckListState);
 
   const removeDeck = (id: string) => {
@@ -22,7 +22,7 @@ export default function Table() {
         </tr>
       </thead>
       <tbody>
-        {decks.map(({ id, name, format }) => (
+        {filteredDecks.map(({ id, name, format }) => (
           <tr key={id}>
             <td data-label="Name">{name}</td>
             <td data-label="Format">{format}</td>

@@ -1,4 +1,4 @@
-import { ActionButton, Modal, Table } from '@/modules/common';
+import { ActionButton, Modal, Table, Filters } from '@/modules/common';
 import { useRef } from 'react';
 import { AddDeckForm } from '@/modules/common';
 
@@ -12,6 +12,7 @@ export default function Listing() {
           textContent="Add new deck"
         />
       </header>
+      <Filters />
       <Table />
       <Modal modalRef={ref}>
         <AddDeckForm modalRef={ref} />
