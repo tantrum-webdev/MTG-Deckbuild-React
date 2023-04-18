@@ -1,2 +1,2 @@
-export { deckListState } from './atom';
+export { deckListState, nameFilterState, formatFilterState } from './atom';
 export { filteredDeckListState } from './withFilters';

@@ -1,12 +1,12 @@
 import endpoints from '@/config/endpoints';
 import { fetcher } from '@/services';
 import { useRecoilState } from 'recoil';
-import { formatFilterState } from '@/store/formatFilter';
+import { formatFilterState } from '@/store/listing';
 import useSWR from 'swr';
 import { Format } from '@/types';
-import classes from './Filters.module.css';
+import classes from './Listing.module.css';
 
-export default function NameFilter() {
+export default function FormatFilter() {
   const [formatFilter, setFormatFilterState] =
     useRecoilState(formatFilterState);
 

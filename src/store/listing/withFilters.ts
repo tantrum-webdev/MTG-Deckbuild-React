@@ -1,7 +1,5 @@
 import { selector } from 'recoil';
-import { nameFilterState } from '../nameFilter';
-import { formatFilterState } from '../formatFilter';
-import { deckListState } from './atom';
+import { deckListState, nameFilterState, formatFilterState } from './atom';
 import { Deck } from '@/types';
 
 export const filteredDeckListState = selector({
