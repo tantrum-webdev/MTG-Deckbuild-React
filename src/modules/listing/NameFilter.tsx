@@ -1,14 +1,14 @@
 import { useRecoilState } from 'recoil';
-import { nameFilterState } from '@/store/nameFilter';
+import { nameFilterState } from '@/store/listing';
 import { useEffect, useState } from 'react';
-import useDebounce from '@/helpers/useDebounce';
-import classes from './Filters.module.css';
+import useDebounce from '@/hooks/useDebounce';
+import classes from './Listing.module.css';
 
 export default function NameFilter() {
   const [, setNameFilterState] = useRecoilState(nameFilterState);
   const [nameFilterInput, setNameFilterInput] = useState('');
 
-  const debouncedNameFilter = useDebounce<string>(nameFilterInput);
+  const debouncedNameFilter = useDebounce(nameFilterInput);
 
   useEffect(() => {
     setNameFilterState(debouncedNameFilter);

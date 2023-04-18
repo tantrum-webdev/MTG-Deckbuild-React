@@ -13,3 +13,8 @@ export const deckListState = atom({
   default: [] as Deck[],
   effects: [syncStorage],
 });
+
+export const nameFilterState = atom({
+  key: 'NameFilter',
+  default: '',
+});
