@@ -18,3 +18,8 @@ export const nameFilterState = atom({
   key: 'NameFilter',
   default: '',
 });
+
+export const formatFilterState = atom({
+  key: 'FormatFilter',
+  default: '',
+});

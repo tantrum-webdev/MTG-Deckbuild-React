@@ -1,16 +1,26 @@
 import { selector } from 'recoil';
-import { deckListState, nameFilterState } from './atom';
+import { deckListState, nameFilterState, formatFilterState } from './atom';
+import { Deck } from '@/types';
 
 export const filteredDeckListState = selector({
   key: 'FilteredDeckList',
   get: ({ get }) => {
-    const deckNameFilter = get(nameFilterState);
+    const isMatchingName = (deck: Deck, name: RegExp) => deck.name.match(name);
+    const isMatchingFormat = (deck: Deck, format: string) =>
+      !format || deck.format === format;
+
     const deckList = get(deckListState);
+    const deckNameFilter = get(nameFilterState);
+    const deckFormatFilter = get(formatFilterState);
 
-    if (deckNameFilter === '') return deckList;
+    if (deckNameFilter === '' && deckFormatFilter === '') return deckList;
 
-    return deckList.filter((deck) =>
-      deck.name.match(new RegExp(deckNameFilter, 'i'))
+    const nameRegExp = new RegExp(deckNameFilter, 'i');
+
+    return deckList.filter(
+      (deck) =>
+        isMatchingName(deck, nameRegExp) &&
+        isMatchingFormat(deck, deckFormatFilter)
     );
   },
 });
