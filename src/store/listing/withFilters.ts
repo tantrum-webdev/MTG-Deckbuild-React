@@ -3,8 +3,8 @@ import { deckListState, nameFilterState, formatFilterState } from './atom';
 import { Deck } from '@/types';
 import { isEmpty } from '@/helpers';
 
-const isMatchingName = (deck: Deck, name: RegExp): boolean =>
-  !!deck.name.match(name);
+const isMatchingName = (deck: Deck, regExp: RegExp): boolean =>
+  regExp.test(deck.name);
 
 const isMatchingFormat = (deck: Deck, format: string): boolean =>
   isEmpty(format) || deck.format === format;
@@ -18,11 +18,11 @@ export const filteredDeckListState = selector({
 
     if (isEmpty(deckNameFilter) && isEmpty(deckFormatFilter)) return deckList;
 
-    const nameRegExp = new RegExp(deckNameFilter, 'i');
+    const deckNameRegExp = new RegExp(deckNameFilter, 'i');
 
     return deckList.filter(
       (deck) =>
-        isMatchingName(deck, nameRegExp) &&
+        isMatchingName(deck, deckNameRegExp) &&
         isMatchingFormat(deck, deckFormatFilter)
     );
   },
