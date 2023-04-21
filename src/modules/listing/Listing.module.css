@@ -1,0 +1,16 @@
+.filters {
+  margin: 1em 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.label {
+  display: flex;
+  gap: 1rem;
+  justify-content: start;
+  padding: 0.2em;
+}
+
+.label span {
+  width: 6ch;
+}

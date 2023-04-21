@@ -1,6 +1,9 @@
 import { ActionButton, Modal, Table } from '@/modules/common';
 import { useRef } from 'react';
 import { AddDeckForm } from '@/modules/common';
+import classes from './Listing.module.css';
+import NameFilter from './NameFilter';
+import FormatFilter from './FormatFilter';
 
 export default function Listing() {
   const ref = useRef<HTMLDialogElement>(null);
@@ -12,6 +15,10 @@ export default function Listing() {
           textContent="Add new deck"
         />
       </header>
+      <div className={classes.filters}>
+        <NameFilter />
+        <FormatFilter />
+      </div>
       <Table />
       <Modal modalRef={ref}>
         <AddDeckForm modalRef={ref} />
