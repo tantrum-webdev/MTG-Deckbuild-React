@@ -1,19 +1,20 @@
 import { selector } from 'recoil';
 import { deckListState, nameFilterState, formatFilterState } from './atom';
 import { Deck } from '@/types';
+import { isEmpty } from '@/helpers';
 
 export const filteredDeckListState = selector({
   key: 'FilteredDeckList',
   get: ({ get }) => {
     const isMatchingName = (deck: Deck, name: RegExp) => deck.name.match(name);
     const isMatchingFormat = (deck: Deck, format: string) =>
-      !format || deck.format === format;
+      isEmpty(format) || deck.format === format;
 
     const deckList = get(deckListState);
     const deckNameFilter = get(nameFilterState);
     const deckFormatFilter = get(formatFilterState);
 
-    if (deckNameFilter === '' && deckFormatFilter === '') return deckList;
+    if (isEmpty(deckNameFilter) && isEmpty(deckFormatFilter)) return deckList;
 
     const nameRegExp = new RegExp(deckNameFilter, 'i');
 
