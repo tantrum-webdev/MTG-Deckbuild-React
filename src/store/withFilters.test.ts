@@ -8,6 +8,12 @@ import {
 } from './listing';
 import { decks } from '@/test';
 
+/**
+ * Selector tests are based on recoil snapshots where you set the values of atoms and observe
+ * the result via the snapshot.getLoadable method
+ * More info: https://recoiljs.org/docs/guides/testing#testing-recoil-state-outside-of-react
+ */
+
 describe('withFilters selectors', () => {
   describe('Search term only', () => {
     it('Returns the same list if search is empty', () => {
