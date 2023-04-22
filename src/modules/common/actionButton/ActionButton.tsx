@@ -1,5 +1,7 @@
+import { MouseEventHandler } from 'react';
+
 interface ButtonProps {
-  action: () => void;
+  action: MouseEventHandler<HTMLButtonElement>;
   textContent: string;
   value?: string;
   type?: 'submit' | 'button';
