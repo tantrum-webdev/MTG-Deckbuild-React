@@ -69,5 +69,22 @@ describe('Deck Listing', () => {
         screen.getByRole('cell', { name: 'new test name' })
       ).toBeInTheDocument();
     });
+
+    it('Deleting a deck removes a row from the table', async () => {
+      const user = userEvent.setup();
+      localStorage.setItem('decks', JSON.stringify(decks));
+
+      renderListing();
+
+      const currentListLength = screen.getAllByRole('row').length;
+
+      // Click on the delete button of deck 2
+      await user.click(screen.getAllByRole('button', { name: 'Delete' })[1]);
+
+      expect(screen.getAllByRole('row')).toHaveLength(currentListLength - 1);
+      expect(
+        screen.queryByRole('cell', { name: 'deck 2' })
+      ).not.toBeInTheDocument();
+    });
   });
 });
