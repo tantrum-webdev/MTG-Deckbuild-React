@@ -15,6 +15,10 @@ const renderListing = () =>
 describe('Deck Listing', () => {
   vi.stubGlobal('localStorage', new LocalStorageMock());
 
+  // Mock dialog native methods to avoid unrecognized calls in jsdom
+  HTMLDialogElement.prototype.showModal = vi.fn();
+  HTMLDialogElement.prototype.close = vi.fn();
+
   afterEach(() => {
     localStorage.clear();
   });
@@ -37,16 +41,15 @@ describe('Deck Listing', () => {
   });
 
   describe('Deck List manipulation', () => {
-    // Mock dialog native methods to avoid unrecognized calls in jsdom
-    HTMLDialogElement.prototype.showModal = vi.fn();
-    HTMLDialogElement.prototype.close = vi.fn();
-
-    it('Adding a deck adds a row to the table', async () => {
+    it('Adding a deck adds a row to the table and storage', async () => {
       const user = userEvent.setup();
 
       renderListing();
 
-      // DOM Elements
+      /* 
+        DOM Elements, using a querySelector on the dialog node since the dialog implementation in JSDom 
+        is currently lacking. This also avoid nodes collision since the filters share the same element type and name
+      */
       const dialog = screen.getByRole('dialog', { hidden: true });
       const nameInput = dialog.querySelector(
         '[name="name"]'
@@ -61,15 +64,20 @@ describe('Deck Listing', () => {
       await user.click(nameInput);
       await user.keyboard('new test name');
       await user.click(formatSelect);
-      await user.click(formatSelect.firstChild as HTMLOptionElement); // Standard format option
+      await user.selectOptions(formatSelect, ['Standard']);
       await user.click(saveButton);
 
       expect(
         screen.getByRole('cell', { name: 'new test name' })
       ).toBeInTheDocument();
+
+      // Verify the synchronization of state with localStorage
+      const storage = localStorage.getItem('decks');
+      expect(storage).not.toBeNull();
+      expect(JSON.parse(storage as string)).toHaveLength(1);
     });
 
-    it('Deleting a deck removes a row from the table', async () => {
+    it('Deleting a deck removes a row from the table and storage', async () => {
       const user = userEvent.setup();
       localStorage.setItem('decks', JSON.stringify(decks));
 
@@ -84,6 +92,10 @@ describe('Deck Listing', () => {
       expect(
         screen.queryByRole('cell', { name: 'deck 2' })
       ).not.toBeInTheDocument();
+
+      // Verify the synchronization of state with localStorage
+      const storage = JSON.parse(localStorage.getItem('decks') as string);
+      expect(storage).toHaveLength(decks.length - 1);
     });
 
     describe('Searching a name in the list of decks', () => {

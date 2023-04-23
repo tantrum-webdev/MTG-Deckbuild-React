@@ -43,7 +43,7 @@ export default function AddDeckForm({ modalRef }: FormProps) {
     resetForm();
   };
   return (
-    <form method="dialog" className={classes.form} name="addDeckForm">
+    <form method="dialog" className={classes.form}>
       <h2>Create a new Deck</h2>
       <label htmlFor="deckName">
         <span>Name:</span>
@@ -64,7 +64,7 @@ export default function AddDeckForm({ modalRef }: FormProps) {
           onChange={updateForm}
           value={form.format}
         >
-          {formatList?.map((format) => (
+          {formatList.map((format) => (
             <option key={format} value={format}>
               {format}
             </option>
