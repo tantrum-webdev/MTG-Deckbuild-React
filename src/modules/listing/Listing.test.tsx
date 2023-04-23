@@ -141,5 +141,46 @@ describe('Deck Listing', () => {
         expect(screen.getAllByRole('row')).toHaveLength(1);
       });
     });
+
+    describe('Combined search and filter', () => {
+      it('Displays the list of matches', async () => {
+        const user = userEvent.setup();
+        localStorage.setItem('decks', JSON.stringify(decks));
+
+        renderListing();
+
+        await user.selectOptions(screen.getByRole('combobox'), ['Standard']);
+        await user.click(screen.getByRole('textbox', { name: 'Name:' }));
+        await user.keyboard('deck 1');
+
+        await waitFor(() => expect(screen.getAllByRole('row')).toHaveLength(2));
+      });
+
+      it('Displays an empty table if no match for formats', async () => {
+        const user = userEvent.setup();
+        localStorage.setItem('decks', JSON.stringify(decks));
+
+        renderListing();
+
+        await user.selectOptions(screen.getByRole('combobox'), ['Limited']);
+        await user.click(screen.getByRole('textbox', { name: 'Name:' }));
+        await user.keyboard('deck');
+
+        await waitFor(() => expect(screen.getAllByRole('row')).toHaveLength(1));
+      });
+
+      it('Displays an empty table if no match for search', async () => {
+        const user = userEvent.setup();
+        localStorage.setItem('decks', JSON.stringify(decks));
+
+        renderListing();
+
+        await user.selectOptions(screen.getByRole('combobox'), ['Standard']);
+        await user.click(screen.getByRole('textbox', { name: 'Name:' }));
+        await user.keyboard('no matching result');
+
+        await waitFor(() => expect(screen.getAllByRole('row')).toHaveLength(1));
+      });
+    });
   });
 });
