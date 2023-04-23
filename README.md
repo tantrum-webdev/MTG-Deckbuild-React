@@ -10,6 +10,10 @@ A brief description of what this project does and who it's for
 - Import decks from another platform
 - Export decks as text to use in another platform
 
+## Required
+
+- [NodeJS](https://nodejs.org/en) version 20 or later.
+
 ## Tech Stack
 
 **Client:** React, TypeScript, React-router, Recoil, SWR, CSS Modules, MSW, React-i18n
