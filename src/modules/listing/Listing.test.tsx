@@ -12,12 +12,18 @@ const renderListing = () =>
     </RecoilRoot>
   );
 
-describe('Deck Listing', () => {
-  vi.stubGlobal('localStorage', new LocalStorageMock());
+const setDecks = () => localStorage.setItem('decks', JSON.stringify(decks));
 
-  // Mock dialog native methods to avoid unrecognized calls in jsdom
-  HTMLDialogElement.prototype.showModal = vi.fn();
-  HTMLDialogElement.prototype.close = vi.fn();
+describe('Deck Listing', () => {
+  const user = userEvent.setup();
+
+  beforeAll(() => {
+    vi.stubGlobal('localStorage', new LocalStorageMock());
+
+    // Mock dialog native methods to avoid unrecognized calls in jsdom
+    HTMLDialogElement.prototype.showModal = vi.fn();
+    HTMLDialogElement.prototype.close = vi.fn();
+  });
 
   afterEach(() => {
     localStorage.clear();
@@ -31,19 +37,17 @@ describe('Deck Listing', () => {
     });
 
     it('Renders rows in table when there are existing decks', () => {
-      localStorage.setItem('decks', JSON.stringify(decks));
-
+      setDecks();
       renderListing();
 
-      // We add 1 since there is the header row that is automatically counter
-      expect(screen.getAllByRole('row')).toHaveLength(decks.length + 1);
+      expect(screen.getAllByRole('cell', { name: /deck/i })).toHaveLength(
+        decks.length
+      );
     });
   });
 
   describe('Deck List manipulation', () => {
     it('Adding a deck adds a row to the table and storage', async () => {
-      const user = userEvent.setup();
-
       renderListing();
 
       /* 
@@ -63,7 +67,6 @@ describe('Deck Listing', () => {
 
       await user.click(nameInput);
       await user.keyboard('new test name');
-      await user.click(formatSelect);
       await user.selectOptions(formatSelect, ['Standard']);
       await user.click(saveButton);
 
@@ -74,21 +77,25 @@ describe('Deck Listing', () => {
       // Verify the synchronization of state with localStorage
       const storage = localStorage.getItem('decks');
       expect(storage).not.toBeNull();
-      expect(JSON.parse(storage as string)).toHaveLength(1);
+
+      const parsedStorage = JSON.parse(storage as string);
+      expect(parsedStorage[0].name).toBe('new test name');
+      expect(parsedStorage).toHaveLength(1);
     });
 
     it('Deleting a deck removes a row from the table and storage', async () => {
-      const user = userEvent.setup();
-      localStorage.setItem('decks', JSON.stringify(decks));
-
+      setDecks();
       renderListing();
 
-      const currentListLength = screen.getAllByRole('row').length;
+      const currentListLength = screen.getAllByRole('cell', {
+        name: /deck/i,
+      }).length;
 
-      // Click on the delete button of deck 2
       await user.click(screen.getAllByRole('button', { name: 'Delete' })[1]);
 
-      expect(screen.getAllByRole('row')).toHaveLength(currentListLength - 1);
+      expect(screen.getAllByRole('cell', { name: /deck/i })).toHaveLength(
+        currentListLength - 1
+      );
       expect(
         screen.queryByRole('cell', { name: 'deck 2' })
       ).not.toBeInTheDocument();
@@ -99,31 +106,24 @@ describe('Deck Listing', () => {
     });
 
     describe('Searching a name in the list of decks', () => {
-      it('Displays the list of matches', async () => {
-        const user = userEvent.setup();
-        localStorage.setItem('decks', JSON.stringify(decks));
-
+      beforeEach(() => {
+        setDecks();
         renderListing();
+      });
 
+      it('Displays the list of matches', async () => {
         await user.click(screen.getByRole('textbox', { name: 'Name:' }));
         await user.keyboard('deck 1');
 
-        /* 
-          waitFor used to take into account the debounced value of the input
-          before applying it to the state that will filter the list of result 
-        */
+        // waitFor to account for debounced value
         await waitFor(() => expect(screen.getAllByRole('row')).toHaveLength(3));
       });
 
       it('Table is empty if there is no match', async () => {
-        const user = userEvent.setup();
-        localStorage.setItem('decks', JSON.stringify(decks));
-
-        renderListing();
-
         await user.click(screen.getByRole('textbox', { name: 'Name:' }));
         await user.keyboard('no matching result');
 
+        // waitFor to account for debounced value
         await waitFor(() =>
           expect(screen.queryByRole('cell')).not.toBeInTheDocument()
         );
@@ -131,23 +131,18 @@ describe('Deck Listing', () => {
     });
 
     describe('Filtering the list by format', () => {
-      it('Displays the matching results', async () => {
-        const user = userEvent.setup();
-        localStorage.setItem('decks', JSON.stringify(decks));
-
+      beforeEach(() => {
+        setDecks();
         renderListing();
+      });
 
+      it('Displays the matching results', async () => {
         await user.selectOptions(screen.getByRole('combobox'), ['Commander']);
 
         expect(screen.getAllByRole('row')).toHaveLength(4);
       });
 
       it('Displays an empty table if there is no deck with this format', async () => {
-        const user = userEvent.setup();
-        localStorage.setItem('decks', JSON.stringify(decks));
-
-        renderListing();
-
         await user.selectOptions(screen.getByRole('combobox'), ['Limited']);
 
         expect(screen.getAllByRole('row')).toHaveLength(1);
@@ -155,42 +150,35 @@ describe('Deck Listing', () => {
     });
 
     describe('Combined search and filter', () => {
-      it('Displays the list of matches', async () => {
-        const user = userEvent.setup();
-        localStorage.setItem('decks', JSON.stringify(decks));
-
+      beforeEach(() => {
+        setDecks();
         renderListing();
+      });
 
+      it('Displays the list of matches', async () => {
         await user.selectOptions(screen.getByRole('combobox'), ['Standard']);
         await user.click(screen.getByRole('textbox', { name: 'Name:' }));
         await user.keyboard('deck 1');
 
+        // waitFor to account for debounced value
         await waitFor(() => expect(screen.getAllByRole('row')).toHaveLength(2));
       });
 
       it('Displays an empty table if no match for formats', async () => {
-        const user = userEvent.setup();
-        localStorage.setItem('decks', JSON.stringify(decks));
-
-        renderListing();
-
         await user.selectOptions(screen.getByRole('combobox'), ['Limited']);
         await user.click(screen.getByRole('textbox', { name: 'Name:' }));
         await user.keyboard('deck');
 
+        // waitFor to account for debounced value
         await waitFor(() => expect(screen.getAllByRole('row')).toHaveLength(1));
       });
 
       it('Displays an empty table if no match for search', async () => {
-        const user = userEvent.setup();
-        localStorage.setItem('decks', JSON.stringify(decks));
-
-        renderListing();
-
         await user.selectOptions(screen.getByRole('combobox'), ['Standard']);
         await user.click(screen.getByRole('textbox', { name: 'Name:' }));
         await user.keyboard('no matching result');
 
+        // waitFor to account for debounced value
         await waitFor(() => expect(screen.getAllByRole('row')).toHaveLength(1));
       });
     });
