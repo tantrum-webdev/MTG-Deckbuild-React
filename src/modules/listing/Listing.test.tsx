@@ -1,10 +1,9 @@
 import { LocalStorageMock, decks } from '@/test';
 import Listing from './Listing';
 import { RecoilRoot } from 'recoil';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
-import { AddDeckForm } from '@/modules/common';
 
 const renderListing = () =>
   render(
@@ -85,6 +84,62 @@ describe('Deck Listing', () => {
       expect(
         screen.queryByRole('cell', { name: 'deck 2' })
       ).not.toBeInTheDocument();
+    });
+
+    describe('Searching a name in the list of decks', () => {
+      it('Displays the list of matches', async () => {
+        const user = userEvent.setup();
+        localStorage.setItem('decks', JSON.stringify(decks));
+
+        renderListing();
+
+        await user.click(screen.getByRole('textbox', { name: 'Name:' }));
+        await user.keyboard('deck 1');
+
+        /* 
+          waitFor used to take into account the debounced value of the input
+          before applying it to the state that will filter the list of result 
+        */
+        await waitFor(() => expect(screen.getAllByRole('row')).toHaveLength(3));
+      });
+
+      it('Table is empty if there is no match', async () => {
+        const user = userEvent.setup();
+        localStorage.setItem('decks', JSON.stringify(decks));
+
+        renderListing();
+
+        await user.click(screen.getByRole('textbox', { name: 'Name:' }));
+        await user.keyboard('no matching result');
+
+        await waitFor(() =>
+          expect(screen.queryByRole('cell')).not.toBeInTheDocument()
+        );
+      });
+    });
+
+    describe('Filtering the list by format', () => {
+      it('Displays the matching results', async () => {
+        const user = userEvent.setup();
+        localStorage.setItem('decks', JSON.stringify(decks));
+
+        renderListing();
+
+        await user.selectOptions(screen.getByRole('combobox'), ['Commander']);
+
+        expect(screen.getAllByRole('row')).toHaveLength(4);
+      });
+
+      it('Displays an empty table if there is no deck with this format', async () => {
+        const user = userEvent.setup();
+        localStorage.setItem('decks', JSON.stringify(decks));
+
+        renderListing();
+
+        await user.selectOptions(screen.getByRole('combobox'), ['Limited']);
+
+        expect(screen.getAllByRole('row')).toHaveLength(1);
+      });
     });
   });
 });
