@@ -1,5 +1,5 @@
 import { storage } from '@/services';
-import { Deck } from '@/types';
+import { Deck, Format } from '@/types';
 import { atom, AtomEffect } from 'recoil';
 
 const syncStorage: AtomEffect<Deck[]> = ({ setSelf, onSet }) => {
@@ -8,18 +8,18 @@ const syncStorage: AtomEffect<Deck[]> = ({ setSelf, onSet }) => {
   onSet((newValue) => storage.store(newValue));
 };
 
-export const deckListState = atom({
+export const deckListState = atom<Deck[]>({
   key: 'DeckList',
-  default: [] as Deck[],
+  default: [],
   effects: [syncStorage],
 });
 
-export const nameFilterState = atom({
+export const nameFilterState = atom<string>({
   key: 'NameFilter',
   default: '',
 });
 
-export const formatFilterState = atom({
+export const formatFilterState = atom<Format | ''>({
   key: 'FormatFilter',
   default: '',
 });

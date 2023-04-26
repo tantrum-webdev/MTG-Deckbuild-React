@@ -9,7 +9,7 @@ interface ModalProps {
 
 export default function Modal({ modalRef, children }: ModalProps) {
   return createPortal(
-    <dialog ref={modalRef} className={classes.modal}>
+    <dialog ref={modalRef} className={classes.modal} role="dialog">
       {children}
     </dialog>,
     document.body

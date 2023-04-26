@@ -1,12 +1,10 @@
-import endpoints from '@/config/endpoints';
-import { fetcher } from '@/services';
 import { deckListState } from '@/store/listing';
-import { Deck, Format, FormUpdateFn, IDLessDeck } from '@/types';
-import { MutableRefObject, useState } from 'react';
+import { Deck, FormUpdateFn, IDLessDeck } from '@/types';
+import { MouseEventHandler, MutableRefObject, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
-import useSWR from 'swr';
 import { ActionButton } from '@/modules/common';
 import classes from './AddDeckForm.module.css';
+import { formatList } from '@/config';
 
 const initialState: IDLessDeck = {
   name: '',
@@ -21,8 +19,6 @@ export default function AddDeckForm({ modalRef }: FormProps) {
   const [form, setForm] = useState<IDLessDeck>(initialState);
   const setDeckList = useSetRecoilState(deckListState);
 
-  const { data: formats } = useSWR<Format[]>(endpoints.formats, fetcher);
-
   const updateForm: FormUpdateFn = ({ target: { name, value } }) => {
     setForm((prev) => ({
       ...prev,
@@ -34,10 +30,12 @@ export default function AddDeckForm({ modalRef }: FormProps) {
     setForm(initialState);
   };
 
-  const addDeck = () => {
+  const addDeck: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
     const deck: Deck = { ...form, id: crypto.randomUUID() };
     setDeckList((decks) => [...decks, deck]);
     resetForm();
+    modalRef.current?.close();
   };
 
   const closeModal = () => {
@@ -66,7 +64,7 @@ export default function AddDeckForm({ modalRef }: FormProps) {
           onChange={updateForm}
           value={form.format}
         >
-          {formats?.map((format) => (
+          {formatList.map((format) => (
             <option key={format} value={format}>
               {format}
             </option>
@@ -81,9 +79,6 @@ export default function AddDeckForm({ modalRef }: FormProps) {
           value="save"
           type="submit"
         />
-        {/* <button value="save" onClick={addDeck}>
-          Save
-        </button> */}
       </div>
     </form>
   );
