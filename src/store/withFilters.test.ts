@@ -15,7 +15,7 @@ import { decks } from '@/test';
  */
 
 describe('withFilters selectors', () => {
-  describe('Search term only', () => {
+  describe('Name filter only', () => {
     it('Returns the same list if search is empty', () => {
       const snapshot = snapshot_UNSTABLE(({ set }) => {
         set(deckListState, decks);
@@ -28,7 +28,7 @@ describe('withFilters selectors', () => {
       expect(result).toStrictEqual(decks);
     });
 
-    it('Returns an empty array if search has no match', () => {
+    it('Returns an empty array if name filter has no match', () => {
       const snapshot = snapshot_UNSTABLE(({ set }) => {
         set(deckListState, decks);
         set(nameFilterState, 'no name matches this');
@@ -40,7 +40,7 @@ describe('withFilters selectors', () => {
       expect(result).toStrictEqual([]);
     });
 
-    it('Updates the result list based on search term', () => {
+    it('Updates the result list based on name filter term', () => {
       const snapshot = snapshot_UNSTABLE(({ set }) => {
         set(deckListState, decks);
         set(nameFilterState, 'deck 1');
@@ -106,7 +106,7 @@ describe('withFilters selectors', () => {
     });
   });
 
-  describe('Both search and filter', () => {
+  describe('Both name and format filter', () => {
     it('Returns an empty array if no item matches every predicate', () => {
       const snapshot = snapshot_UNSTABLE(({ set }) => {
         set(deckListState, decks);

@@ -105,7 +105,7 @@ describe('Deck Listing', () => {
       expect(storage).toHaveLength(decks.length - 1);
     });
 
-    describe('Searching a name in the list of decks', () => {
+    describe('Name filter in the list of decks', () => {
       beforeEach(() => {
         setDecks();
         renderListing();
@@ -149,7 +149,7 @@ describe('Deck Listing', () => {
       });
     });
 
-    describe('Combined search and filter', () => {
+    describe('Combined name and format filter', () => {
       beforeEach(() => {
         setDecks();
         renderListing();
@@ -173,7 +173,7 @@ describe('Deck Listing', () => {
         await waitFor(() => expect(screen.getAllByRole('row')).toHaveLength(1));
       });
 
-      it('Displays an empty table if no match for search', async () => {
+      it('Displays an empty table if no match for name filter', async () => {
         await user.selectOptions(screen.getByRole('combobox'), ['Standard']);
         await user.click(screen.getByRole('textbox', { name: 'Name:' }));
         await user.keyboard('no matching result');
