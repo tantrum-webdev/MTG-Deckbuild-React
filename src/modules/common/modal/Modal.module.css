@@ -1,0 +1,11 @@
+.modal {
+  margin: auto;
+  padding: 0;
+  position: fixed;
+  inset: 0;
+}
+
+.modal:not([open]) {
+  pointer-events: none;
+  opacity: 0;
+}

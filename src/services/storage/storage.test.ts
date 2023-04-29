@@ -1,6 +1,6 @@
-import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { LocalStorageMock } from '@/test';
 import { storage } from './storage';
+import { Deck } from '@/types';
 
 describe('Storage interface', () => {
   beforeAll(() => {
@@ -26,8 +26,16 @@ describe('Storage interface', () => {
 
   describe('GetOne method', () => {
     it('Returns deck if it exists in storage', () => {
-      const deck = { id: 'item', name: 'My custom deck' };
-      const otherDeck = { id: 'other', mame: 'Imported deck' };
+      const deck: Deck = {
+        id: 'item',
+        name: 'My custom deck',
+        format: 'Standard',
+      };
+      const otherDeck: Deck = {
+        id: 'other',
+        name: 'Imported deck',
+        format: 'Standard',
+      };
       localStorage.setItem('decks', JSON.stringify([deck, otherDeck]));
 
       expect(storage.getOne('item')).toStrictEqual(deck);
@@ -39,24 +47,43 @@ describe('Storage interface', () => {
   });
 
   describe('Store method', () => {
-    it('Add a new deck to the storage', () => {
-      storage.store({ id: 'first item' });
-      storage.store({ id: 'second item' });
+    it('Updates the storage with a new array', () => {
+      const initialDecks: Deck[] = [
+        { id: '1', format: 'Limited', name: 'deck one' },
+      ];
+      storage.store(initialDecks);
+      let storedDecks = JSON.parse(localStorage.getItem('decks') as string);
+      expect(storedDecks.length).toBe(1);
 
-      const decks = JSON.parse(localStorage.getItem('decks') as string);
-      expect(decks.length).toBe(2);
+      const updatedDecks: Deck[] = [
+        { id: '1', format: 'Limited', name: 'deck one' },
+        { id: '2', format: 'Standard', name: 'deck two' },
+      ];
+      storage.store(updatedDecks);
+      storedDecks = JSON.parse(localStorage.getItem('decks') as string);
+      expect(storedDecks).toStrictEqual(updatedDecks);
     });
   });
 
   describe('Update method', () => {
     it('Returns null if previous deck is not found in storage', () => {
-      expect(storage.update({ id: 'new deck' })).toBe(null);
+      expect(
+        storage.update({
+          id: 'new deck',
+          format: 'Commander',
+          name: 'new deck',
+        })
+      ).toBe(null);
       expect(localStorage.getItem('decks')).toBe(null);
     });
 
     it('Replaces an existing entry in the storage with updated values', () => {
-      const deck = { id: 'item', name: 'old deck' };
-      const updatedDeck = { id: 'item', name: 'new deck' };
+      const deck: Deck = { id: 'item', name: 'old deck', format: 'Limited' };
+      const updatedDeck: Deck = {
+        id: 'item',
+        name: 'new deck',
+        format: 'Standard',
+      };
       localStorage.setItem('decks', JSON.stringify([deck]));
 
       expect(storage.update(updatedDeck)).toStrictEqual(updatedDeck);
