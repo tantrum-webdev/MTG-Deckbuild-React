@@ -11,9 +11,10 @@ export const router = createBrowserRouter([
   {
     path: '/decks/:id',
     element: <Deck />,
+    errorElement: <Error message="No matching deck" />,
   },
   {
     path: '*',
-    element: <Error />,
+    element: <Error message="No matching route" />,
   },
 ]);

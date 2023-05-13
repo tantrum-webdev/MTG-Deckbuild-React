@@ -1,3 +1,7 @@
-export default function Error() {
-  return <p>Error page</p>;
+interface ErrorProps {
+  message: string;
+}
+
+export default function Error({ message }: ErrorProps) {
+  return <p>{message}</p>;
 }

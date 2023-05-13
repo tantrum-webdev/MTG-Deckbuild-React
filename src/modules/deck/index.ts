@@ -1,3 +1,3 @@
-import Deck from './Deck';
+import DeckPage from './Deck';
 
-export { Deck };
+export { DeckPage as Deck };
