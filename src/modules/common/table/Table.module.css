@@ -13,6 +13,7 @@
 
 .table tr {
   background: #f8f8f8;
+  cursor: pointer;
   display: block;
   margin-bottom: 0.625rem;
   padding: 0.25rem;
@@ -48,6 +49,10 @@
 
 .table td:last-child {
   border-bottom-width: 0;
+}
+
+.table td:has(button) {
+  cursor: default;
 }
 
 @container (min-width: 37.5em) {
