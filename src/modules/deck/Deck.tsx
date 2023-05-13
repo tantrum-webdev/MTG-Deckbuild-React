@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-export default function DeckPage() {
+export default function DeckDetails() {
   const { id } = useParams();
   const decks = useRecoilValue(deckListState);
   const [deck, setDeck] = useState<Deck>();
