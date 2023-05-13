@@ -51,10 +51,6 @@
   border-bottom-width: 0;
 }
 
-.table td:has(button) {
-  cursor: default;
-}
-
 @container (min-width: 37.5em) {
   .table {
     border: 1px solid #ccc;
