@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { Listing } from '@/modules/listing';
 import { Error } from '@/modules/error';
-import { Deck } from '@/modules/deck';
+import { DeckDetails } from '@/modules/deck';
 
 export const router = createBrowserRouter([
   {
@@ -10,7 +10,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '/decks/:id',
-    element: <Deck />,
+    element: <DeckDetails />,
     errorElement: <Error message="No matching deck" />,
   },
   {
