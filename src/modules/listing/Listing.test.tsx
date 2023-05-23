@@ -4,13 +4,23 @@ import { RecoilRoot } from 'recoil';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
+import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 
-const renderListing = () =>
+const routes = [
+  {
+    path: '/',
+    element: <Listing />,
+  },
+];
+
+const renderListing = () => {
+  const router = createMemoryRouter(routes, { initialEntries: ['/'] });
   render(
     <RecoilRoot>
-      <Listing />
+      <RouterProvider router={router} />
     </RecoilRoot>
   );
+};
 
 const setDecks = () => localStorage.setItem('decks', JSON.stringify(decks));
 
