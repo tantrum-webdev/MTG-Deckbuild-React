@@ -1,11 +1,12 @@
 import { RecoilRoot } from 'recoil';
-import { Listing } from '@/modules/listing';
 import './styles.css';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './router';
 
 function App() {
   return (
     <RecoilRoot>
-      <Listing />
+      <RouterProvider router={router} />
     </RecoilRoot>
   );
 }

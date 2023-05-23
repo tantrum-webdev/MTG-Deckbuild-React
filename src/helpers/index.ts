@@ -7,3 +7,7 @@ export function isEmpty(value: CommonDataTypes): boolean {
 
   return Object.keys(value).length === 0;
 }
+
+export function isNil(value: unknown) {
+  return value === null || value === undefined;
+}

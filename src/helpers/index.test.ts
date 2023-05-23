@@ -1,4 +1,4 @@
-import { isEmpty } from '@/helpers';
+import { isEmpty, isNil } from '@/helpers';
 
 describe('helpers', () => {
   describe('isEmpty method', () => {
@@ -24,6 +24,32 @@ describe('helpers', () => {
 
     it('Return true when value is an empty object', () => {
       expect(isEmpty({})).toBe(true);
+    });
+  });
+
+  describe('isNil method', () => {
+    it('Returns true if value is null', () => {
+      expect(isNil(null)).toBe(true);
+    });
+
+    it('Returns true if value is undefined', () => {
+      expect(isNil(undefined)).toBe(true);
+    });
+
+    it('Returns false if value is empty array', () => {
+      expect(isNil([])).toBe(false);
+    });
+
+    it('Returns false if value is empty object', () => {
+      expect(isNil({})).toBe(false);
+    });
+
+    it('Returns false if value is empty string', () => {
+      expect(isNil('')).toBe(false);
+    });
+
+    it('Returns false if value is 0', () => {
+      expect(isNil(0)).toBe(false);
     });
   });
 });
