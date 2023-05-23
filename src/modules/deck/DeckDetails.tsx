@@ -1,3 +1,4 @@
+import { isNil } from '@/helpers';
 import { deckListState } from '@/store/listing';
 import { Deck } from '@/types';
 import { useEffect, useState } from 'react';
@@ -12,7 +13,7 @@ export default function DeckDetails() {
   useEffect(() => {
     const result = decks.find((x) => x.id === id);
 
-    if (!result) {
+    if (isNil(result)) {
       throw new Error('No matching deck');
     }
 
