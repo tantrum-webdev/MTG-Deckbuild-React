@@ -13,7 +13,7 @@ describe('Storage interface', () => {
 
   describe('Index method', () => {
     it('Returns an empty array if storage is empty', () => {
-      expect(storage.index()).toStrictEqual(null);
+      expect(storage.index()).toStrictEqual([]);
     });
 
     it('Returns an array of decks if storage is not empty', () => {
